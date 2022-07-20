@@ -19,12 +19,12 @@ export function ImageGallery({ serchName }) {
     setStatus('pending');
 
     getImages(serchName, 1)
-      .then(arrayPictures => {
-        if (arrayPictures.hits.length < 1) {
+      .then(({ total, hits }) => {
+        if (total < 1) {
           return Promise.reject(new Error(`Can't find: "${serchName}"`));
         }
 
-        setArrayPictures(arrayPictures.hits);
+        setArrayPictures(hits);
         setStatus('resolved');
       })
       .catch(error => {
@@ -37,10 +37,10 @@ export function ImageGallery({ serchName }) {
     if (page === 1) {
       return;
     }
-    getImages(serchName, page + 1).then(arr => {
-      setArrayPictures([...arrayPictures, ...arr.hits]);
+    getImages(serchName, page).then(({ hits }) => {
+      setArrayPictures(prevState => [...prevState, hits]);
     });
-  }, [page]);
+  }, [page, serchName]);
 
   if (status === 'pending') {
     return <TailSpin />;

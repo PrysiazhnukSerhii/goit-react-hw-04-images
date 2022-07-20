@@ -16,8 +16,7 @@ export function Modal({ picture }) {
     }
 
     let result = picture.filter(information => information.id === Number(id));
-    console.log(picture);
-    console.log(result);
+
     setModal(result);
   });
 
