@@ -1,23 +1,14 @@
 import { Searchbar } from './searchbar';
-import { Component } from 'react';
+import { useState } from 'react';
 import { ImageGallery } from './imageGallery';
 
-export class App extends Component {
-  state = {
-    serchName: '',
-  };
+export function App() {
+  const [serchName, setSerchName] = useState('');
 
-  takeName = e => {
-    this.setState(() => ({ serchName: e }));
-    return;
-  };
-
-  render() {
-    return (
-      <div className="app">
-        <Searchbar onSubmit={this.takeName} />
-        <ImageGallery serchName={this.state.serchName} />
-      </div>
-    );
-  }
+  return (
+    <div className="app">
+      <Searchbar onSubmit={setSerchName} />
+      <ImageGallery serchName={serchName} />
+    </div>
+  );
 }

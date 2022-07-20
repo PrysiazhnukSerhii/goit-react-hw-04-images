@@ -1,51 +1,43 @@
-import { Component } from 'react';
+import { useState } from 'react';
 
-export class Modal extends Component {
-  state = { modal: null };
+export function Modal({ picture }) {
+  const [modal, setModal] = useState(null);
 
-  resetModal = () => {
-    this.setState({ modal: null });
-  };
+  window.addEventListener('click', e => {
+    const { classList, id } = e.target;
 
-  componentDidMount() {
-    window.addEventListener('click', e => {
-      const { classList, id } = e.target;
-
-      if (classList.contains('overlay')) {
-        this.resetModal();
-        return;
-      }
-
-      if (!classList.contains('imageGalleryItem-image')) {
-        return;
-      }
-
-      let result = this.props.picture.filter(
-        information => information.id === Number(id)
-      );
-
-      this.setState({ modal: result });
-    });
-    window.addEventListener('keydown', e => {
-      if (e.code === 'Escape') {
-        this.resetModal();
-      }
-    });
-  }
-
-  render() {
-    if (!this.state.modal) {
+    if (classList.contains('overlay')) {
+      setModal(null);
       return;
     }
 
-    const { largeImageURL, tags } = this.state.modal[0];
+    if (!classList.contains('imageGalleryItem-image')) {
+      return;
+    }
 
-    return (
-      <div className="overlay">
-        <div className="modal">
-          <img src={largeImageURL} alt={tags} />
-        </div>
-      </div>
-    );
+    let result = picture.filter(information => information.id === Number(id));
+    console.log(picture);
+    console.log(result);
+    setModal(result);
+  });
+
+  window.addEventListener('keydown', e => {
+    if (e.code === 'Escape') {
+      setModal(null);
+    }
+  });
+
+  if (!modal || modal.length < 1) {
+    return;
   }
+
+  const { largeImageURL, tags } = modal[0];
+
+  return (
+    <div className="overlay">
+      <div className="modal">
+        <img src={largeImageURL} alt={tags} />
+      </div>
+    </div>
+  );
 }

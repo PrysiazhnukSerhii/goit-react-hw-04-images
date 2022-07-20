@@ -1,47 +1,33 @@
-import { Component } from 'react';
+import { useState } from 'react';
 
-export class Searchbar extends Component {
-  state = {
-    carrentValue: '',
-  };
+export function Searchbar({ onSubmit }) {
+  const [carrentValue, setCarrentValue] = useState('');
 
-  onChange = e => {
-    this.setState(() => {
-      return { carrentValue: e.target.value.toLowerCase() };
-    });
-  };
-
-  onSubmitForm = e => {
+  const onSubmitForm = e => {
     e.preventDefault();
 
-    this.props.onSubmit(this.state.carrentValue);
+    onSubmit(carrentValue);
 
-    this.reset();
+    setCarrentValue('');
   };
 
-  reset = () => {
-    this.setState(() => ({ carrentValue: '' }));
-  };
+  return (
+    <header className="searchbar">
+      <form className="searchForm" onSubmit={onSubmitForm}>
+        <button type="submit" className="searchForm-button">
+          <span className="button-label">Search</span>
+        </button>
 
-  render() {
-    return (
-      <header className="searchbar">
-        <form className="searchForm" onSubmit={this.onSubmitForm}>
-          <button type="submit" className="searchForm-button">
-            <span className="button-label">Search</span>
-          </button>
-
-          <input
-            className="searchForm-input"
-            type="text"
-            autoComplete="off"
-            autoFocus
-            placeholder="Search images and photos"
-            onChange={this.onChange}
-            value={this.state.carrentValue}
-          />
-        </form>
-      </header>
-    );
-  }
+        <input
+          className="searchForm-input"
+          type="text"
+          autoComplete="off"
+          autoFocus
+          placeholder="Search images and photos"
+          onChange={e => setCarrentValue(e.target.value.toLowerCase())}
+          value={carrentValue}
+        />
+      </form>
+    </header>
+  );
 }
