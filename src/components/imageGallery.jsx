@@ -24,6 +24,7 @@ export function ImageGallery({ serchName }) {
           return Promise.reject(new Error(`Can't find: "${serchName}"`));
         }
 
+        setPage(1);
         setArrayPictures(hits);
         setStatus('resolved');
       })
@@ -38,7 +39,7 @@ export function ImageGallery({ serchName }) {
       return;
     }
     getImages(serchName, page).then(({ hits }) => {
-      setArrayPictures(prevState => [...prevState, hits]);
+      setArrayPictures(prevState => [...prevState, ...hits]);
     });
   }, [page, serchName]);
 
